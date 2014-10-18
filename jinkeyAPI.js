@@ -294,19 +294,13 @@
 			ind = (_x + _y * _canvasW)*4;
 			pxldta = _pixelbase.data;
 			objdta = obj[2];
-			for(var i=0,j=objdta.length;i<j;i+=4){
+			for(var i=0,j=objdta.length;i<j;i+=4,ind+=4){
 
-				if(_zBuffer[ind] < z) continue;
-
-				for(var k=0,l=sizea;k<l;k+=4){
-					pxldta[ind] = 	objdta[i];
+				pxldta[ind] = 	objdta[i];
 					pxldta[ind+1] = objdta[i+1];
 					pxldta[ind+2] = objdta[i+2];
 					pxldta[ind+3] = objdta[i+3];
-					ind+=4;
-
-				}
-				
+	
 				
 
 				
