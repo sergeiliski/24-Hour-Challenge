@@ -237,8 +237,7 @@
 				if(_entity instanceof jinkeyAPI.game.Entity){
 
 						var data = jinkeyAPI(_entity.sprite.url).getData();
-					
-						blitImage(data,100,100,0,50,50);
+						blitImage(data,_entity.pos.xcoord, _entity.pos.ycoord,0,50,50);
 
 				}
 
@@ -294,19 +293,23 @@
 			ind = (_x + _y * _canvasW)*4;
 			pxldta = _pixelbase.data;
 			objdta = obj[2];
-			for(var i=0,j=objdta.length;i<j;i+=4,ind+=4){
-
-				pxldta[ind] = 	objdta[i];
-					pxldta[ind+1] = objdta[i+1];
-					pxldta[ind+2] = objdta[i+2];
-					pxldta[ind+3] = objdta[i+3];
-	
-				
-
-				
-	
+			var row = objdta.length / sizea;
+			for(var i=0,j=row;i<j;i++){
+				for(var k=0,l=sizea;k<l;k+=4,ind+=4){
+					pxldta[ind] = 	objdta[k];
+					pxldta[ind+1] = objdta[k+1];
+					pxldta[ind+2] = objdta[k+2];
+					pxldta[ind+3] = objdta[k+3];
+				}
+				ind += _canvasW;
 			}
+			
 
+
+
+
+
+					
 			
 		}
 	} // Blitter end
