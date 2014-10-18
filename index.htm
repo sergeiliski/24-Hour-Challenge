@@ -38,7 +38,12 @@
 			)
 		);
 
+	var playerPixel = new jinkeyAPI.game.EntityPixel(
+			new jinkeyAPI.CartesianCoord(100,100,0)
+		);
+
 		Level.insertEntity(player);
+		Level.insertEntity(playerPixel);
 
 
 	function initme(){
@@ -48,7 +53,19 @@
 
 			jinkeyAPI(jinkeyAPI.keys.K_1).isDown(function(){
 
-				player.pos.xcoord +=10;
+				playerPixel.pos.ycoord -=1;
+			});
+			jinkeyAPI(jinkeyAPI.keys.K_2).isDown(function(){
+
+				player.pos.ycoord +=1;
+			});
+			jinkeyAPI(jinkeyAPI.keys.K_3).isDown(function(){
+
+				player.pos.xcoord +=1;
+			});
+			jinkeyAPI(jinkeyAPI.keys.K_4).isDown(function(){
+
+				player.pos.xcoord -=1;
 			});
 			Blitter.refresh();
 			Blitter.blit(1,Level);

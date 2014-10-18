@@ -239,6 +239,8 @@
 						var data = jinkeyAPI(_entity.sprite.url).getData();
 						blitImage(data,_entity.pos.xcoord, _entity.pos.ycoord,0,50,50);
 
+				}else if(_entity instanceof jinkeyAPI.game.EntityPixel){
+					blitPixel(_entity.pos.xcoord,_entity.pos.ycoord);
 				}
 
 				blitPixel(100,100,0);
@@ -306,11 +308,12 @@
 			}
 	*/
 			for(var i=0,j=objdta.length;i<j;i+=4){
-					pxldta[ind] = 	objdta[i];
-					pxldta[ind+1] = objdta[i+1];
-					pxldta[ind+2] = objdta[i+2];
-					pxldta[ind+3] = objdta[i+3];
-					ind+=4;
+					pxldta[i] = 	objdta[i];
+					pxldta[i+1] = objdta[i+1];
+					pxldta[i+2] = objdta[i+2];
+					pxldta[i+3] = objdta[i+3];
+				//	ind+=4;
+
 			}
 
 
@@ -457,6 +460,14 @@
 	}
 	jinkeyAPI.game.Entity.prototype = {
 		constructor: jinkeyAPI.game.Entity
+	}
+
+	jinkeyAPI.game.EntityPixel = function(pos,visible){
+		this.pos = pos;
+		this.isVisible = visible || true;
+	}
+	jinkeyAPI.game.EntityPixel.prototype = {
+		constructor: jinkeyAPI.game.EntityPixel
 	}
 
 	jinkeyAPI.game.loop = function(e){
