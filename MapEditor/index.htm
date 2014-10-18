@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<script src="jinkeyAPI.js"></script>
+
+	<meta charset="utf-8">
+	<style>
+		* {color:black;}
+		canvas{
+			width: 100%;
+			height: 100%;
+			background:grey;
+			
+		}
+	</style>
+</head>
+<body>
+
+<script>
+	var Blitter = new jinkeyAPI.Blitter();	
+
+
+
+
+	function loop(){
+
+		jinkeyAPI.input.keyDown(jinkeyAPI(jinkeyAPI.keys.K_1), function(){
+			console.log("keydown");
+
+		});
+		Blitter.refresh();
+		//Blitter.blit();
+	}
+
+	jinkeyAPI.game.loop(loop);
+					
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+</html>
