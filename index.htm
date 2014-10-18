@@ -46,6 +46,7 @@
 		Level.insertEntity(playerPixel);
 
 
+
 	function initme(){
 
 		jinkeyAPI.input.listen();
@@ -53,7 +54,7 @@
 
 			jinkeyAPI(jinkeyAPI.keys.K_1).isDown(function(){
 
-				playerPixel.pos.ycoord -=1;
+				player.pos.ycoord -=1;
 			});
 			jinkeyAPI(jinkeyAPI.keys.K_2).isDown(function(){
 

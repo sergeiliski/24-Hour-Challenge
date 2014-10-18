@@ -238,6 +238,7 @@
 
 						var data = jinkeyAPI(_entity.sprite.url).getData();
 						blitImage(data,_entity.pos.xcoord, _entity.pos.ycoord,0,100,100);
+					
 
 				}else if(_entity instanceof jinkeyAPI.game.EntityPixel){
 					blitPixel(_entity.pos.xcoord,_entity.pos.ycoord);
@@ -290,41 +291,26 @@
 		} // blitPixel end
 
 		function blitImage(obj,x,y,z,sizea,sizeb){
-			var ind,data,
+			var ind,data,k, _w = sizea*4;
 				_x = x >> 0,_y = y >> 0;
 			ind = (_x + _y * _canvasW)*4;
 			pxldta = _pixelbase.data;
 			objdta = obj[2];
-			/*
-			for(var i=0,j=r;i<j;i++){
-				for(var k=0,l=sizea*4;k<l;k+=4,ind+=4){
-					pxldta[ind] = 	objdta[k];
-					pxldta[ind+1] = objdta[k+1];
-					pxldta[ind+2] = objdta[k+2];
-					pxldta[ind+3] = objdta[k+3];
-				}
-				ind += _canvasW*4;
-			}
-	*/		var k=0;
 			
-
-			for(var y0=_y,y1 = sizeb;y0<y1;y0++){
-				for(var x0=_x,x1 = sizea;x0<x1;x0++){
-
-					ind = (x0 + y0 * _canvasW)*4;
-
+			
+			k=0;
+			for(var l=0,m=sizeb;l<m;l++){
+				for(var i=0,j=_w;i<j;i+=4){
 					pxldta[ind] = 	objdta[k];
 					pxldta[ind+1] = objdta[k+1];
 					pxldta[ind+2] = objdta[k+2];
 					pxldta[ind+3] = objdta[k+3];
+					ind += 4;
 					k+=4;
-
 				}
-
+				ind+= (_canvasW*4)-_w;
+				
 			}
-
-
-
 
 
 					
