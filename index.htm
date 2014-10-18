@@ -28,7 +28,7 @@
 
 
 	var player = new jinkeyAPI.game.Entity(
-			new jinkeyAPI.CartesianCoord(0,0,0),
+			new jinkeyAPI.CartesianCoord(100,100,0),
 			new jinkeyAPI.game.Sprite(
 				"test.jpg",
 				new jinkeyAPI.CartesianCoord(100,100,0),
@@ -48,7 +48,7 @@
 
 			jinkeyAPI(jinkeyAPI.keys.K_1).isDown(function(){
 
-				console.log(1);
+				player.pos.xcoord +=10;
 			});
 			Blitter.refresh();
 			Blitter.blit(1,Level);

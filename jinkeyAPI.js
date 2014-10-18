@@ -254,7 +254,7 @@
 
 		this.refresh = function(){
 			//TULEE AINA EKANA ENNE BLIT
-			//_context.clearRect(0,0,_canvasW, _canvasH);
+			_context.clearRect(0,0,_canvasW, _canvasH);
 			_pixelbase  = _context.getImageData(0,0,_canvasW, _canvasH);
 
 			// Refresh Z-Buffer
@@ -293,17 +293,26 @@
 			ind = (_x + _y * _canvasW)*4;
 			pxldta = _pixelbase.data;
 			objdta = obj[2];
-			var row = objdta.length / sizea;
-			for(var i=0,j=row;i<j;i++){
-				for(var k=0,l=sizea;k<l;k+=4,ind+=4){
+			var r = objdta.length / sizea*4;
+			/*
+			for(var i=0,j=r;i<j;i++){
+				for(var k=0,l=sizea*4;k<l;k+=4,ind+=4){
 					pxldta[ind] = 	objdta[k];
 					pxldta[ind+1] = objdta[k+1];
 					pxldta[ind+2] = objdta[k+2];
 					pxldta[ind+3] = objdta[k+3];
 				}
-				ind += _canvasW;
+				ind += _canvasW*4;
 			}
-			
+	*/
+			for(var i=0,j=objdta.length;i<j;i+=4){
+					pxldta[ind] = 	objdta[i];
+					pxldta[ind+1] = objdta[i+1];
+					pxldta[ind+2] = objdta[i+2];
+					pxldta[ind+3] = objdta[i+3];
+					ind+=4;
+			}
+
 
 
 
