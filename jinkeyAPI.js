@@ -237,7 +237,7 @@
 				if(_entity instanceof jinkeyAPI.game.Entity){
 
 						var data = jinkeyAPI(_entity.sprite.url).getData();
-						blitImage(data,_entity.pos.xcoord, _entity.pos.ycoord,0,50,50);
+						blitImage(data,_entity.pos.xcoord, _entity.pos.ycoord,0,100,100);
 
 				}else if(_entity instanceof jinkeyAPI.game.EntityPixel){
 					blitPixel(_entity.pos.xcoord,_entity.pos.ycoord);
@@ -295,7 +295,6 @@
 			ind = (_x + _y * _canvasW)*4;
 			pxldta = _pixelbase.data;
 			objdta = obj[2];
-			var r = objdta.length / sizea*4;
 			/*
 			for(var i=0,j=r;i<j;i++){
 				for(var k=0,l=sizea*4;k<l;k+=4,ind+=4){
@@ -306,16 +305,23 @@
 				}
 				ind += _canvasW*4;
 			}
-	*/
-			for(var i=0,j=objdta.length;i<j;i+=4){
-					pxldta[i] = 	objdta[i];
-					pxldta[i+1] = objdta[i+1];
-					pxldta[i+2] = objdta[i+2];
-					pxldta[i+3] = objdta[i+3];
-				//	ind+=4;
+	*/		var k=0;
+			
+
+			for(var y0=_y,y1 = sizeb;y0<y1;y0++){
+				for(var x0=_x,x1 = sizea;x0<x1;x0++){
+
+					ind = (x0 + y0 * _canvasW)*4;
+
+					pxldta[ind] = 	objdta[k];
+					pxldta[ind+1] = objdta[k+1];
+					pxldta[ind+2] = objdta[k+2];
+					pxldta[ind+3] = objdta[k+3];
+					k+=4;
+
+				}
 
 			}
-
 
 
 
