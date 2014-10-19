@@ -1,89 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
 
-<head>
-<script src="jinkeyAPI.js"></script>
+    <title>24 Hour Challenge</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-	<meta charset="utf-8">
-	<style>
-		* {color:black;}
-		canvas{
-			width: 100%;
-			height: 100%;
-			background:grey;
-			
-		}
-	</style>
-</head>
-<body>
+    <link rel="stylesheet" href="css/app.css">
+    <script type="text/javascript" src="jinkeyAPI.js"></script>
+    <style>
+    * {color:black;}
+      canvas{
+        width: 100%;
+        height: 100%;
+        background:grey;
+        
+      }
+    </style>
 
-<script>
-	var Blitter = new jinkeyAPI.Blitter();	
-	var Level = new jinkeyAPI.Stage();
-	
+  </head>
+  <body>
+    <div class="wrapper">
+      <script>
+       var Blitter = new jinkeyAPI.Blitter();  
+       var Level = new jinkeyAPI.Stage();
 
-	jinkeyAPI("test.jpg").loadResource();
-	jinkeyAPI().complete(initme);
+       var prevTick;
+       function gameLoop(){
 
+          jinkeyAPI(jinkeyAPI.keys.UP).isDown(function(){
 
+            player.transform.ycoord -=2;
 
-	var player = new jinkeyAPI.game.Entity(
-			new jinkeyAPI.CartesianCoord(100,100,0),
-			new jinkeyAPI.game.Sprite(
-				"test.jpg",
-				new jinkeyAPI.CartesianCoord(100,100,0),
-				new jinkeyAPI.CartesianCoord(100,100,0),
-				1,
-				new jinkeyAPI.CartesianCoord(0,1)
-			)
-		);
+             var _x = player.transform.xcoord + (10* Math.random());
+              var _y = player.transform.ycoord;
 
-	var playerPixel = new jinkeyAPI.game.EntityPixel(
-			new jinkeyAPI.CartesianCoord(100,100,0)
-		);
-
-		Level.insertEntity(player);
-		Level.insertEntity(playerPixel);
-
-
-
-	function initme(){
-
-		jinkeyAPI.input.listen();
-		function loop(){
-
-			jinkeyAPI(jinkeyAPI.keys.K_1).isDown(function(){
-
-				player.pos.ycoord -=1;
-			});
-			jinkeyAPI(jinkeyAPI.keys.K_2).isDown(function(){
-
-				player.pos.ycoord +=1;
-			});
-			jinkeyAPI(jinkeyAPI.keys.K_3).isDown(function(){
-
-				player.pos.xcoord +=1;
-			});
-			jinkeyAPI(jinkeyAPI.keys.K_4).isDown(function(){
-
-				player.pos.xcoord -=1;
-			});
-			Blitter.refresh();
-			Blitter.blit(1,Level);
-		}
-
-		jinkeyAPI.game.loop(loop);
-}
-					
+               var smoke = new jinkeyAPI.game.Entity(
+                    new jinkeyAPI.CartesianCoord(_x,_y,0),          // Entity Position
+                    new jinkeyAPI.game.Sprite(                     // Sprite Object
+                    'smokeAnim.png',                              // Sprite Image
+                    new jinkeyAPI.CartesianCoord(0,0,0),          // Sprite Position
+                    new jinkeyAPI.CartesianCoord(20,20),         // Sprite Size
+                    6,                                           // Sprite Animation Speed
+                    [0,1,2,3]                                        // Sprite Frames
+                    
+                    ),
+                    new jinkeyAPI.game.Physical(),
+                    false,                                           // Entity uses Physical Object
+                    true                                             // Entity Visibility
+                );
+                Level.insertEntity(smoke);
+                specialFXList.push(smoke);
+                
 
 
+          });
+          jinkeyAPI(jinkeyAPI.keys.DOWN).isDown(function(){
+            //
+            //
+          });
+          jinkeyAPI(jinkeyAPI.keys.LEFT).isDown(function(){
+            player.transform.xcoord -=2;
+          });
+          jinkeyAPI(jinkeyAPI.keys.RIGHT).isDown(function(){
+            player.transform.xcoord +=2;
+          });
+
+          var now = Date.now();
+          var dt = (now - prevTick) / 1000.0;
+
+
+          updateGameObjectTicks(dt)
+
+          Blitter.refresh();
+          Blitter.blit(1,Level);
+
+       }
+
+       function initializeData(){
+          console.log("jinkeyAPI initialized the game.");
+          jinkeyAPI.input.listen();
+          prevTick = Date.now();
+          jinkeyAPI.game.loop(gameLoop);
+
+       }
+
+       jinkeyAPI.resources.loadResource([
+        'test.png',
+        'platformA.jpg',
+        'smokeAnim.png',
+        'cloud.png'
+
+
+        ]);
+       jinkeyAPI.resources.onComplete(initializeData);
+
+
+       ////////////////////////////////////////////////////////
+       //
+       // GAME LOGIC 
+       //
+       ///////////////////////////////////////////////////////
+
+
+       var player = new jinkeyAPI.game.Entity(
+            new jinkeyAPI.CartesianCoord(100,50,0),            // Entity Position
+            new jinkeyAPI.game.Sprite(                        // Sprite Object
+                'test.png',                                   // Sprite Image
+                new jinkeyAPI.CartesianCoord(0,0,0),          // Sprite Position
+                new jinkeyAPI.CartesianCoord(20,20),          // Sprite Size
+                10000000,                                           // Sprite Animation Speed
+                [3,2,1,0,3,2]                                         // Sprite Frames
+            ),
+            new jinkeyAPI.game.Physical(                      // Entity Physics Object
+                0.004,                                        // Acceleration speed
+                10,                                           // Acceleration limit
+                0.09,                                         // Bounce 
+                0.8                                           // Friction
+              ),
+            true,                                             // Entity uses Physical Object
+            true                                             // Entity Visibility
+          );
+
+
+       var platform = new jinkeyAPI.game.Entity(
+            new jinkeyAPI.CartesianCoord(100,100,0),          // Entity Position
+            new jinkeyAPI.game.Sprite(                        // Sprite Object
+                'platformA.jpg',                              // Sprite Image
+                new jinkeyAPI.CartesianCoord(0,0,0),          // Sprite Position
+                new jinkeyAPI.CartesianCoord(100,20),         // Sprite Size
+                0,                                           // Sprite Animation Speed
+                [0,1,2,3,4,5,6,7]                                        // Sprite Frames
+                
+            ),
+            new jinkeyAPI.game.Physical(),
+            false,                                           // Entity uses Physical Object
+            true                                             // Entity Visibility
+          );
+
+
+        var cloud = new jinkeyAPI.game.Entity(
+            new jinkeyAPI.CartesianCoord(230,30,0),          // Entity Position
+            new jinkeyAPI.game.Sprite(                        // Sprite Object
+                'cloud.png',                              // Sprite Image
+                new jinkeyAPI.CartesianCoord(0,0,0),          // Sprite Position
+                new jinkeyAPI.CartesianCoord(50,31),         // Sprite Size
+                0,                                           // Sprite Animation Speed
+                [0,1,2,3,4,5,6,7]                                        // Sprite Frames
+                
+            ),
+            new jinkeyAPI.game.Physical(),
+            false,                                           // Entity uses Physical Object
+            true                                             // Entity Visibility
+          );
+
+       Level.insertEntity(player);
+
+
+
+       var enemyList = [];
+       var specialFXList = [];
+       var platformList = [];
+
+       //// TEMP PUSH /////////////////////////
+
+       platformList.push(platform);
+       Level.insertEntity(platform);
+
+       platformList.push(cloud);
+       Level.insertEntity(cloud);
+
+       ////////////////////////////////////////
+
+       function updateGameObjectTicks(dt){
+          player.physical.update();
+          player.sprite.update(dt);
+
+          player.transform.ycoord += player.physical.velocity.ycoord;
+
+          if(cloud.transform.xcoord >= 0){
+            cloud.transform.xcoord -= 0.02;
+          }else  cloud.transform.xcoord = 230;
+
+
+           for(var i=0;i<platformList.length;i++){
+              var platform = platformList[i];
+
+              platform.sprite.update(dt);
+              
+          }
+
+          for(var i=0;i<enemyList.length;i++){
+              var enemy = enemyList[i];
+
+              enemy.sprite.update(dt);
+
+              if(enemy.transform.xcoord + enemy.sprite.size.xcoord < 0){
+                enemyList.splice(i,1);
+                i--;
+              }
+
+
+          }
+
+
+          for(var i=0;i<specialFXList.length;i++){
+              var effect = specialFXList[i];
+
+              effect.sprite.update(dt);
+              console.log(effect.sprite.life);
+              if(effect.sprite.life > 50){
+                Level.destroyEntity(effect);
+                specialFXList.splice(i,1);
+              }
+
+
+              
+          }
+
+          /// CHECK FOR COLLISIONS
+
+          for(var i=0;i < enemyList.length;i++){
+            var enemy = enemyList[i];
+            var pos = enemy.transform;
+            var size = enemy.size;
+
+            if(jinkeyAPI.game.boxCollision(pos,size, player.transform, player.sprite.size)){
+              //if player collides with the enemy
+
+            }
+          }
+
+
+          for(var i=0;i < platformList.length;i++){
+            var platform = platformList[i];
+            var pos = platform.transform;
+            var size = platform.sprite.size;
+
+            if(jinkeyAPI.game.boxCollision(pos,size, player.transform, player.sprite.size)){
+              //if player collides with the platform
+              player.physical.velocity.zero();
+   
+
+            }
+          }
+
+
+       }
 
 
 
 
-
-</script>
-
-</body>
-
+      
+      </script>
+        
+    </div>
+    
+    
+  </body>
 </html>
